@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -76,7 +76,7 @@ class TeamController extends AbstractController
 
             return Redirect::back()->withInput(Binput::except('password'))
                 ->with('title', sprintf(
-                    '<strong>%s</strong> %s',
+                    '%s %s',
                     trans('dashboard.notifications.whoops'),
                     trans('dashboard.team.add.failure')
                 ))
@@ -89,7 +89,7 @@ class TeamController extends AbstractController
         ]);
 
         $successMsg = sprintf(
-            '<strong>%s</strong> %s',
+            '%s %s',
             trans('dashboard.notifications.awesome'),
             trans('dashboard.team.add.success')
         );
@@ -124,7 +124,7 @@ class TeamController extends AbstractController
 
             return Redirect::back()->withInput(Binput::except('password'))
                 ->with('title', sprintf(
-                    '<strong>%s</strong> %s',
+                    '%s %s',
                     trans('dashboard.notifications.whoops'),
                     trans('dashboard.team.edit.failure')
                 ))
@@ -137,7 +137,7 @@ class TeamController extends AbstractController
         ]);
 
         $successMsg = sprintf(
-            '<strong>%s</strong> %s',
+            '%s %s',
             trans('dashboard.notifications.awesome'),
             trans('dashboard.team.edit.success')
         );

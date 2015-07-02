@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,6 +13,7 @@ namespace CachetHQ\Cachet\Http\Controllers\Admin;
 
 use CachetHQ\Cachet\Http\Controllers\AbstractController;
 use CachetHQ\Cachet\Models\Component;
+use CachetHQ\Cachet\Models\ComponentGroup;
 use CachetHQ\Cachet\Models\IncidentTemplate;
 use Exception;
 use GrahamCampbell\Binput\Facades\Binput;
@@ -45,13 +46,32 @@ class ApiController extends AbstractController
      */
     public function postUpdateComponentOrder()
     {
-        $componentData = Binput::all();
-        foreach ($componentData['ids'] as $order => $componentId) {
+        $componentData = Binput::get('ids');
+
+        foreach ($componentData as $order => $componentId) {
             // Ordering should be 1-based, data comes in 0-based
             Component::find($componentId)->update(['order' => $order + 1]);
         }
 
         return $componentData;
+    }
+
+    /**
+     * Updates the order of component groups.
+     *
+     * @return array
+     */
+    public function postUpdateComponentGroupOrder()
+    {
+        $groupData = Binput::get('ids');
+
+        foreach ($groupData as $order => $groupId) {
+            ComponentGroup::find($groupId)->update([
+                'order' => $order + 1,
+            ]);
+        }
+
+        return $groupData;
     }
 
     /**

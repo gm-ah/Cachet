@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,7 +16,6 @@ use CachetHQ\Cachet\Models\Component;
 use CachetHQ\Cachet\Models\ComponentGroup;
 use CachetHQ\Cachet\Models\Tag;
 use GrahamCampbell\Binput\Facades\Binput;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
 
@@ -76,7 +75,7 @@ class ComponentController extends AbstractController
 
         return View::make('dashboard.components.groups.index')->with([
             'pageTitle' => trans_choice('dashboard.components.groups.groups', 2).' - '.trans('dashboard.dashboard'),
-            'groups'    => ComponentGroup::all(),
+            'groups'    => ComponentGroup::orderBy('order')->get(),
             'subMenu'   => $this->subMenu,
         ]);
     }
@@ -116,7 +115,6 @@ class ComponentController extends AbstractController
     public function updateComponentAction(Component $component)
     {
         $_component = Binput::get('component');
-        $_component['user_id'] = Auth::user()->id;
         $tags = array_pull($_component, 'tags');
 
         $component->update($_component);
@@ -129,7 +127,7 @@ class ComponentController extends AbstractController
 
             return Redirect::back()->withInput(Binput::all())
                 ->with('title', sprintf(
-                    '<strong>%s</strong> %s',
+                    '%s %s',
                     trans('dashboard.notifications.whoops'),
                     trans('dashboard.components.edit.failure')
                 ))
@@ -154,7 +152,7 @@ class ComponentController extends AbstractController
         $component->tags()->sync($componentTags);
 
         $successMsg = sprintf(
-            '<strong>%s</strong> %s',
+            '%s %s',
             trans('dashboard.notifications.awesome'),
             trans('dashboard.components.edit.success')
         );
@@ -185,7 +183,6 @@ class ComponentController extends AbstractController
     public function createComponentAction()
     {
         $_component = Binput::get('component');
-        $_component['user_id'] = Auth::user()->id;
         // We deal with tags separately.
         $tags = array_pull($_component, 'tags');
 
@@ -199,7 +196,7 @@ class ComponentController extends AbstractController
 
             return Redirect::back()->withInput(Binput::all())
                 ->with('title', sprintf(
-                    '<strong>%s</strong> %s',
+                    '%s %s',
                     trans('dashboard.notifications.whoops'),
                     trans('dashboard.components.add.failure')
                 ))
@@ -224,7 +221,7 @@ class ComponentController extends AbstractController
         $component->tags()->sync($componentTags);
 
         $successMsg = sprintf(
-            '<strong>%s</strong> %s',
+            '%s %s',
             trans('dashboard.notifications.awesome'),
             trans('dashboard.components.add.success')
         );
@@ -318,7 +315,7 @@ class ComponentController extends AbstractController
 
             return Redirect::back()->withInput(Binput::all())
                 ->with('title', sprintf(
-                    '<strong>%s</strong> %s',
+                    '%s %s',
                     trans('dashboard.notifications.whoops'),
                     trans('dashboard.components.groups.add.failure')
                 ))
@@ -331,7 +328,7 @@ class ComponentController extends AbstractController
         ]);
 
         $successMsg = sprintf(
-            '<strong>%s</strong> %s',
+            '%s %s',
             trans('dashboard.notifications.awesome'),
             trans('dashboard.components.groups.add.success')
         );
@@ -359,7 +356,7 @@ class ComponentController extends AbstractController
 
             return Redirect::back()->withInput(Binput::all())
                 ->with('title', sprintf(
-                    '<strong>%s</strong> %s',
+                    '%s %s',
                     trans('dashboard.notifications.whoops'),
                     trans('dashboard.components.groups.edit.failure')
                 ))
@@ -372,7 +369,7 @@ class ComponentController extends AbstractController
         ]);
 
         $successMsg = sprintf(
-            '<strong>%s</strong> %s',
+            '%s %s',
             trans('dashboard.notifications.awesome'),
             trans('dashboard.components.groups.edit.success')
         );

@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -32,7 +32,9 @@ class AuthController extends AbstractController
      */
     public function showLogin()
     {
-        return View::make('auth.login');
+        return View::make('auth.login')->with([
+            'pageTitle' => trans('dashboard.login.login'),
+        ]);
     }
 
     /**
@@ -57,6 +59,8 @@ class AuthController extends AbstractController
 
             // We probably wan't to add support for "Remember me" here.
             Auth::attempt(Binput::only(['email', 'password']));
+
+            segment_track('Logged In');
 
             return Redirect::intended('dashboard');
         }
@@ -117,6 +121,8 @@ class AuthController extends AbstractController
     public function logoutAction()
     {
         Auth::logout();
+
+        segment_track('Logged Out');
 
         return Redirect::to('/');
     }

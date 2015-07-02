@@ -5,12 +5,18 @@ $(function() {
         if (! options.crossDomain) {
             token = $('meta[name="token"]').attr('content');
             if (token) {
-                return jqXHR.setRequestHeader('X-CSRF-Token', token);
+                jqXHR.setRequestHeader('X-CSRF-Token', token);
             }
         }
+
+        return jqXHR;
     });
 
     $.ajaxSetup({
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('Accept', 'application/json');
+            // xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+        },
         statusCode: {
             401: function () {
                 window.location.href = '/';
@@ -126,6 +132,21 @@ $(function() {
         }
     });
 
+    $('input[rel=datepicker-any]').datetimepicker({
+        format: "DD/MM/YYYY HH:mm",
+        sideBySide: true,
+        icons: {
+            time: 'ion-clock',
+            date: 'ion-android-calendar',
+            up: 'ion-ios-arrow-up',
+            down: 'ion-ios-arrow-down',
+            previous: 'ion-ios-arrow-left',
+            next: 'ion-ios-arrow-right',
+            today: 'ion-android-home',
+            clear: 'ion-trash-a',
+        }
+    });
+
     // Sortable components.
     var componentList = document.getElementById("component-list");
     if (componentList) {
@@ -133,19 +154,51 @@ $(function() {
             group: "omega",
             handle: ".drag-handle",
             onUpdate: function() {
-                var orderedComponentIds = $.map(
-                    $('#component-list .striped-list-item'),
-                    function(elem) {
-                        return $(elem).data('component-id');
-                    }
-                );
+                var orderedComponentIds = $.map($('#component-list .striped-list-item'), function(elem) {
+                    return $(elem).data('component-id');
+                });
+
                 $.ajax({
                     async: true,
                     url: '/dashboard/api/components/order',
                     type: 'POST',
-                    data: {ids: orderedComponentIds},
+                    data: {
+                        ids: orderedComponentIds
+                    },
                     success: function() {
-                        (new CachetHQ.Notifier()).notify('Components updated.', 'success');
+                        (new CachetHQ.Notifier()).notify('Component orders updated.', 'success');
+                    },
+                    error: function() {
+                        (new CachetHQ.Notifier()).notify('Component orders not updated.', 'error');
+                    }
+                });
+            }
+        });
+    }
+
+    // Sortable Component Groups
+    var componentGroupList = document.getElementById("component-group-list");
+    if (componentGroupList) {
+        new Sortable(componentGroupList, {
+            group: "omega",
+            handle: ".drag-handle",
+            onUpdate: function() {
+                var orderedComponentGroupsIds = $.map(
+                    $('#component-group-list .striped-list-item'),
+                    function(elem) {
+                        return $(elem).data('group-id');
+                    }
+                );
+                $.ajax({
+                    async: true,
+                    url: '/dashboard/api/components/groups/order',
+                    type: 'POST',
+                    data: {ids: orderedComponentGroupsIds},
+                    success: function() {
+                        (new CachetHQ.Notifier()).notify('Component groups order has been updated.', 'success');
+                    },
+                    error: function() {
+                        (new CachetHQ.Notifier()).notify('Component groups order could not be updated.', 'error');
                     }
                 });
             }
@@ -180,7 +233,6 @@ $(function() {
         if (slug) {
             $.ajax({
                 async: true,
-                dataType: 'json',
                 data: {
                     slug: slug
                 },
@@ -201,6 +253,14 @@ $(function() {
     $('#remove-banner').click(function(){
         $('#banner-view').remove();
         $('input[name=remove_banner]').val('1');
+    });
+
+    $('.group-name').on('click', function () {
+        var $this = $(this);
+
+        $this.find('.group-toggle').toggleClass('ion-ios-minus-outline').toggleClass('ion-ios-plus-outline');
+
+        $this.next('.group-items').toggleClass('hide');
     });
 
     // Setup wizard

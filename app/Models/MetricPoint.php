@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,17 +11,12 @@
 
 namespace CachetHQ\Cachet\Models;
 
+use CachetHQ\Cachet\Presenters\MetricPointPresenter;
 use Illuminate\Database\Eloquent\Model;
+use McCool\LaravelAutoPresenter\HasPresenter;
 use Watson\Validating\ValidatingTrait;
 
-/**
- * @property int            $id
- * @property int            $metric_id
- * @property int            $value
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- */
-class MetricPoint extends Model
+class MetricPoint extends Model implements HasPresenter
 {
     use ValidatingTrait;
 
@@ -30,7 +25,7 @@ class MetricPoint extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['metric_id', 'value'];
+    protected $fillable = ['metric_id', 'value', 'created_at'];
 
     /**
      * The validation rules.
@@ -48,6 +43,16 @@ class MetricPoint extends Model
      */
     public function metric()
     {
-        return $this->belongsTo('CachetHQ\Cachet\Models\Metric', 'id', 'metric_id');
+        return $this->belongsTo(Metric::class, 'id', 'metric_id');
+    }
+
+    /**
+     * Get the presenter class.
+     *
+     * @return string
+     */
+    public function getPresenterClass()
+    {
+        return MetricPointPresenter::class;
     }
 }

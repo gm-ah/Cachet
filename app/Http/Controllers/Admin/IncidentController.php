@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,15 +11,18 @@
 
 namespace CachetHQ\Cachet\Http\Controllers\Admin;
 
+use CachetHQ\Cachet\Events\IncidentHasReportedEvent;
+use CachetHQ\Cachet\Facades\Setting;
 use CachetHQ\Cachet\Http\Controllers\AbstractController;
 use CachetHQ\Cachet\Models\Component;
 use CachetHQ\Cachet\Models\ComponentGroup;
 use CachetHQ\Cachet\Models\Incident;
 use CachetHQ\Cachet\Models\IncidentTemplate;
 use GrahamCampbell\Binput\Facades\Binput;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
+use Jenssegers\Date\Date;
 
 class IncidentController extends AbstractController
 {
@@ -44,7 +47,7 @@ class IncidentController extends AbstractController
                 'icon'   => 'ion-android-checkmark-circle',
                 'active' => true,
             ],
-            'schedule'  => [
+            'schedule' => [
                 'title'  => trans('dashboard.schedule.schedule'),
                 'url'    => route('dashboard.schedule'),
                 'icon'   => 'ion-android-calendar',
@@ -110,8 +113,15 @@ class IncidentController extends AbstractController
     public function createIncidentAction()
     {
         $incidentData = Binput::get('incident');
-        $incidentData['user_id'] = Auth::user()->id;
         $componentStatus = array_pull($incidentData, 'component_status');
+
+        if (array_has($incidentData, 'created_at') && $incidentData['created_at']) {
+            $incidentDate = Date::createFromFormat('d/m/Y H:i', $incidentData['created_at'], Setting::get('app_timezone'))->setTimezone(Config::get('app.timezone'));
+            $incidentData['created_at'] = $incidentDate;
+            $incidentData['updated_at'] = $incidentDate;
+        } else {
+            unset($incidentData['created_at']);
+        }
 
         $incident = Incident::create($incidentData);
 
@@ -123,7 +133,7 @@ class IncidentController extends AbstractController
 
             return Redirect::back()->withInput(Binput::all())
                 ->with('title', sprintf(
-                    '<strong>%s</strong> %s',
+                    '%s %s',
                     trans('dashboard.notifications.whoops'),
                     trans('dashboard.incidents.add.failure')
                 ))
@@ -143,10 +153,19 @@ class IncidentController extends AbstractController
         ]);
 
         $successMsg = sprintf(
-            '<strong>%s</strong> %s',
+            '%s %s',
             trans('dashboard.notifications.awesome'),
             trans('dashboard.incidents.add.success')
         );
+
+        $isEnabled = (bool) Setting::get('enable_subscribers', false);
+        $mailAddress = env('MAIL_ADDRESS', false);
+        $mailFrom = env('MAIL_NAME', false);
+        $subscribersEnabled = $isEnabled && $mailAddress && $mailFrom;
+
+        if (array_get($incidentData, 'notify') && $subscribersEnabled) {
+            event(new IncidentHasReportedEvent($incident));
+        }
 
         return Redirect::back()->with('success', $successMsg);
     }
@@ -214,7 +233,7 @@ class IncidentController extends AbstractController
 
             return Redirect::back()->withInput(Binput::all())
                 ->with('title', sprintf(
-                    '<strong>%s</strong> %s',
+                    '%s %s',
                     trans('dashboard.notifications.awesome'),
                     trans('dashboard.incidents.templates.add.failure')
                 ))
@@ -227,7 +246,7 @@ class IncidentController extends AbstractController
         ]);
 
         $successMsg = sprintf(
-            '<strong>%s</strong> %s',
+            '%s %s',
             trans('dashboard.notifications.awesome'),
             trans('dashboard.incidents.templates.add.success')
         );
@@ -283,7 +302,15 @@ class IncidentController extends AbstractController
     public function editIncidentAction(Incident $incident)
     {
         $incidentData = Binput::get('incident');
-        $incidentData['user_id'] = Auth::user()->id;
+
+        if (array_has($incidentData, 'created_at') && $incidentData['created_at']) {
+            $incidentDate = Date::createFromFormat('d/m/Y H:i', $incidentData['created_at'], Setting::get('app_timezone'))->setTimezone(Config::get('app.timezone'));
+            $incidentData['created_at'] = $incidentDate;
+            $incidentData['updated_at'] = $incidentDate;
+        } else {
+            unset($incidentData['created_at']);
+        }
+
         $incident->update($incidentData);
 
         if (!$incident->isValid()) {
@@ -294,11 +321,18 @@ class IncidentController extends AbstractController
 
             return Redirect::back()->withInput(Binput::all())
                 ->with('title', sprintf(
-                    '<strong>%s</strong> %s',
+                    '%s %s',
                     trans('dashboard.notifications.awesome'),
                     trans('dashboard.incidents.templates.edit.failure')
                 ))
                 ->with('errors', $incident->getErrors());
+        }
+
+        $componentStatus = array_pull($incidentData, 'component_status');
+        if ($incident->component) {
+            $incident->component->update([
+                'status' => $componentStatus,
+            ]);
         }
 
         segment_track('Dashboard', [
@@ -307,7 +341,7 @@ class IncidentController extends AbstractController
         ]);
 
         $successMsg = sprintf(
-            '<strong>%s</strong> %s',
+            '%s %s',
             trans('dashboard.notifications.awesome'),
             trans('dashboard.incidents.edit.success')
         );

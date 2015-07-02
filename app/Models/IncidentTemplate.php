@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,14 +15,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Watson\Validating\ValidatingTrait;
 
-/**
- * @property int            $id
- * @property string         $name
- * @property string         $slug
- * @property string         $template
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- */
 class IncidentTemplate extends Model
 {
     use ValidatingTrait;

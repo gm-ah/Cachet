@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -25,7 +25,7 @@ return [
     |
     */
 
-    'default' => env('QUEUE_DRIVER', 'sync'),
+    'default' => env('QUEUE_DRIVER', 'database'),
 
     /*
     |--------------------------------------------------------------------------
@@ -76,9 +76,10 @@ return [
         ],
 
         'redis' => [
-            'driver' => 'redis',
-            'queue'  => 'default',
-            'expire' => 60,
+            'driver'     => 'redis',
+            'connection' => 'default',
+            'queue'      => 'default',
+            'expire'     => 86400,
         ],
 
     ],

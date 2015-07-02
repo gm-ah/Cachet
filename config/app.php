@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -22,7 +22,7 @@ return [
     |
     */
 
-    'debug' => env('APP_DEBUG'),
+    'debug' => env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -89,7 +89,7 @@ return [
 
     'key' => env('APP_KEY', 'SomeRandomString'),
 
-    'cipher' => MCRYPT_RIJNDAEL_128,
+    'cipher' => 'rijndael-256',
 
     /*
     |--------------------------------------------------------------------------
@@ -124,6 +124,7 @@ return [
          */
         'Illuminate\Foundation\Providers\ArtisanServiceProvider',
         'Illuminate\Auth\AuthServiceProvider',
+        'Illuminate\Broadcasting\BroadcastServiceProvider',
         'Illuminate\Bus\BusServiceProvider',
         'Illuminate\Cache\CacheServiceProvider',
         'Illuminate\Foundation\Providers\ConsoleSupportServiceProvider',
@@ -134,7 +135,6 @@ return [
         'Illuminate\Filesystem\FilesystemServiceProvider',
         'Illuminate\Foundation\Providers\FoundationServiceProvider',
         'Illuminate\Hashing\HashServiceProvider',
-        'Illuminate\Html\HtmlServiceProvider',
         'Illuminate\Mail\MailServiceProvider',
         'Illuminate\Pagination\PaginationServiceProvider',
         'Illuminate\Pipeline\PipelineServiceProvider',
@@ -152,7 +152,6 @@ return [
         'Fideloper\Proxy\TrustedProxyServiceProvider',
         'GrahamCampbell\Binput\BinputServiceProvider',
         'GrahamCampbell\Exceptions\ExceptionsServiceProvider',
-        'GrahamCampbell\HTMLMin\HTMLMinServiceProvider',
         'GrahamCampbell\Markdown\MarkdownServiceProvider',
         'GrahamCampbell\Security\SecurityServiceProvider',
         'GrahamCampbell\Throttle\ThrottleServiceProvider',
@@ -160,21 +159,18 @@ return [
         'McCool\LaravelAutoPresenter\LaravelAutoPresenterServiceProvider',
         'PragmaRX\Google2FA\Vendor\Laravel\ServiceProvider',
         'Roumen\Feed\FeedServiceProvider',
+        'Barryvdh\Cors\CorsServiceProvider',
 
         /*
          * Application Service Providers...
          */
         'CachetHQ\Cachet\Providers\AppServiceProvider',
-        'CachetHQ\Cachet\Providers\BusServiceProvider',
+        'CachetHQ\Cachet\Providers\ComposerServiceProvider',
         'CachetHQ\Cachet\Providers\ConfigServiceProvider',
         'CachetHQ\Cachet\Providers\ConsoleServiceProvider',
         'CachetHQ\Cachet\Providers\EventServiceProvider',
-        'CachetHQ\Cachet\Providers\RepositoryServiceProvider',
         'CachetHQ\Cachet\Providers\RouteServiceProvider',
-        'CachetHQ\Cachet\Providers\SettingsServiceProvider',
-        'CachetHQ\Cachet\Providers\SegmentApiServiceProvider',
-        'CachetHQ\Cachet\Providers\ViewComposerServiceProvider',
-        'CachetHQ\Cachet\Providers\LoadConfigServiceProvider',
+        'CachetHQ\Cachet\Providers\SegmentServiceProvider',
         'CachetHQ\Segment\SegmentServiceProvider',
 
     ],
@@ -205,7 +201,6 @@ return [
         'Eloquent'  => 'Illuminate\Database\Eloquent\Model',
         'Event'     => 'Illuminate\Support\Facades\Event',
         'File'      => 'Illuminate\Support\Facades\File',
-        'Form'      => 'Illuminate\Html\FormFacade',
         'Hash'      => 'Illuminate\Support\Facades\Hash',
         'Input'     => 'Illuminate\Support\Facades\Input',
         'Inspiring' => 'Illuminate\Foundation\Inspiring',
@@ -226,8 +221,8 @@ return [
         'Validator' => 'Illuminate\Support\Facades\Validator',
         'View'      => 'Illuminate\Support\Facades\View',
 
-        'Setting'   => 'CachetHQ\Cachet\Facades\Setting',
-        'Str'       => 'Illuminate\Support\Str',
+        'Setting' => 'CachetHQ\Cachet\Facades\Setting',
+        'Str'     => 'Illuminate\Support\Str',
 
     ],
 

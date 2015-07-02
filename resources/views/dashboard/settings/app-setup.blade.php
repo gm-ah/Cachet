@@ -62,6 +62,22 @@
                             <div class="row">
                                 <div class="col-xs-12">
                                     <div class="form-group">
+                                        <label>{{ trans('forms.settings.app-setup.analytics_piwik_url') }}</label>
+                                        <input type="text" name="app_analytics_pi_url" class="form-control" value="{{ Setting::get('app_analytics_pi_url') }}" placeholder="piwik.example.org">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <label>{{ trans('forms.settings.app-setup.analytics_piwik_siteid') }}</label>
+                                        <input type="number" min="1" max="100" name="app_analytics_pi_siteid" class="form-control" value="{{ Setting::get('app_analytics_pi_siteid') ?: 1 }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
                                         <label>{{ trans('forms.settings.app-setup.site-timezone') }}</label>
                                         <select name="app_timezone" class="form-control" required>
                                             <option value="">Select Timezone</option>
@@ -85,7 +101,18 @@
                                             {{ trans('forms.settings.app-setup.date-format') }}
                                             <a href="http://php.net/manual/en/function.date.php" target="_blank"><i class="icon ion-help-circled"></i></a>
                                         </label>
-                                        <input type="text" class="form-control" name="date_format" value="{{ Setting::get('date_format') ?: 'jS F Y' }}">
+                                        <input type="text" class="form-control" name="date_format" value="{{ Setting::get('date_format') ?: 'l jS F Y' }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <label>
+                                            {{ trans('forms.settings.app-setup.incident-date-format') }}
+                                            <a href="http://php.net/manual/en/function.date.php" target="_blank"><i class="icon ion-help-circled"></i></a>
+                                        </label>
+                                        <input type="text" class="form-control" name="incident_date_format" value="{{ Setting::get('incident_date_format') ?: 'l jS F Y H:i:s' }}">
                                     </div>
                                 </div>
                             </div>
@@ -109,6 +136,15 @@
                                     <div class="form-group">
                                         <label>{{ trans('forms.settings.app-setup.days-of-incidents') }}</label>
                                         <input type="number" min="1" max="100" name="app_incident_days" class="form-control" value="{{ Setting::get('app_incident_days') ?: 7 }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <label>{{ trans('forms.settings.app-setup.subscribers') }}</label>
+                                        <input type="hidden" value="0" name="enable_subscribers">
+                                        <input type="checkbox" value="1" name="enable_subscribers" class="form-control" {{ Setting::get('enable_subscribers') ? 'checked' : null }}>
                                     </div>
                                 </div>
                             </div>

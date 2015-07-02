@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -28,8 +28,28 @@ class StatusPageRoutes
                 'as'   => 'status-page',
                 'uses' => 'HomeController@showIndex',
             ]);
+
             $router->get('/atom/{component_group?}', 'AtomController@feedAction');
             $router->get('/rss/{component_group?}', 'RssController@feedAction');
+
+            $router->group(['middleware' => 'app.subscribers'], function ($router) {
+                $router->get('subscribe', [
+                    'as'   => 'subscribe-page',
+                    'uses' => 'SubscribeController@showSubscribe',
+                ]);
+                $router->post('subscribe', [
+                    'as'   => 'subscribe',
+                    'uses' => 'SubscribeController@postSubscribe',
+                ]);
+                $router->get('subscribe/verify/{code}', [
+                    'as'   => 'subscribe-verify',
+                    'uses' => 'SubscribeController@getVerify',
+                ]);
+                $router->get('unsubscribe/{code}', [
+                    'as'   => 'unsubscribe',
+                    'uses' => 'SubscribeController@getUnsubscribe',
+                ]);
+            });
         });
     }
 }

@@ -16,6 +16,7 @@
                 @include('partials.dashboard.errors')
                 <form class='form-vertical' name='ScheduleForm' role='form' method='POST' autocomplete="off">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="incident[visible]" value="1">
                     <fieldset>
                         @if($incidentTemplates->count() > 0)
                         <div class="form-group">
@@ -41,6 +42,11 @@
                         <div class="form-group">
                             <label>{{ trans('forms.incidents.scheduled_at') }}</label>
                             <input type="text" name="incident[scheduled_at]" class="form-control" rel="datepicker" required>
+                        </div>
+                        <div class="form-group">
+                            <label>{{ trans('forms.incidents.notify_subscribers') }}</label>
+                            <input type="checkbox" name="incident[notify]" value="1" checked="{{ Input::old('incident.message', 'checked') }}">
+                            <span class="help-block">{{ trans('forms.optional') }}</span>
                         </div>
                     </fieldset>
 

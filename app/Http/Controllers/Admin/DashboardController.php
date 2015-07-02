@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -24,7 +24,9 @@ class DashboardController extends AbstractController
      */
     public function showDashboard()
     {
-        $components = Component::all();
+        $components = Component::orderBy('order')->get();
+
+        segment_page('Dashboard');
 
         return View::make('dashboard.index')->with([
             'components' => $components,
@@ -39,7 +41,7 @@ class DashboardController extends AbstractController
     public function showNotifications()
     {
         return View::make('dashboard.notifications.index')->with([
-            'pageTitle' => trans('dashboard.notifications.notifications').' - '.trans('dashboard.dashboard'),
+            'pageTitle' => trans('dashboard.notifications.notifications').' '.trans('dashboard.dashboard'),
         ]);
     }
 }

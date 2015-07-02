@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -88,7 +88,7 @@ return [
         'groups' => [
             'groups'        => 'Grup komponen|Grup komponen',
             'no_components' => 'Anda perlu menambahkan grup komponen.',
-            'add'            => [
+            'add'           => [
                 'title'   => 'Tambahkan grup komponen',
                 'success' => 'Grup komponen sudah ditambahkan.',
                 'failure' => 'Ada masalah dengan grup komponen ini.',
@@ -127,7 +127,7 @@ return [
             'success' => 'Anggota Tim sudah ditambahkan.',
             'failure' => 'Ada masalah dengan komponen ini.',
         ],
-        'edit'        => [
+        'edit' => [
             'title'   => 'Perbarui profil',
             'success' => 'Profil sudah diperbarui.',
             'failure' => 'Ada masalah saat memperbarui.',
@@ -172,7 +172,7 @@ return [
     'logout'      => 'Logout',
 
     // Notifications
-    'notifications'     => [
+    'notifications' => [
         'notifications' => 'Notifikasi',
         'awesome'       => 'Keren.',
         'whoops'        => 'Waduh.',

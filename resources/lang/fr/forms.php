@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -81,17 +81,20 @@ return [
     'settings' => [
         /// Application setup
         'app-setup' => [
-            'site-name'         => 'Nom du site',
-            'site-url'          => 'URL du site',
-            'site-timezone'     => 'Fuseau horaire du site',
-            'site-locale'       => 'Langue du site',
-            'date-format'       => 'Format de date',
-            'display-graphs'    => 'Display graphs on status page?',
-            'about-this-page'   => 'À propos de cette page',
-            'days-of-incidents' => 'Nombre de jours à afficher ?',
-            'banner'            => 'Bannière',
-            'banner-help'       => 'Il est recommandé de télécharger des fichiers de moins de 930 pixels de large.',
-            'google-analytics'  => 'Google Analytics code',
+            'site-name'              => 'Nom du site',
+            'site-url'               => 'URL du site',
+            'site-timezone'          => 'Fuseau horaire du site',
+            'site-locale'            => 'Langue du site',
+            'date-format'            => 'Format de date',
+            'display-graphs'         => 'Display graphs on status page?',
+            'about-this-page'        => 'À propos de cette page',
+            'days-of-incidents'      => 'Nombre de jours à afficher ?',
+            'banner'                 => 'Bannière',
+            'banner-help'            => 'Il est recommandé de télécharger des fichiers de moins de 930 pixels de large.',
+            'analytics_google'       => 'Code Google Analytics',
+            'analytics_gosquared'    => 'Code GoSquared Analytics',
+            'analytics_piwik_url'    => 'URL de votre instance de Piwik (sans http(s)://)',
+            'analytics_piwik_siteid' => 'Identifiant du site dans Piwik (site id)',
         ],
         'security' => [
             'allowed-domains'      => 'Domaines autorisés. <small class="help-block"></small>',

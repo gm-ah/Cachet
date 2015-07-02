@@ -2,11 +2,11 @@
 <ul class="list-group metrics">
     @foreach($metrics as $metric)
     <?php
-        $points = range(1, 11);
-        foreach ($points as $hour) {
-            $points[$hour] = $metric->getValues($hour);
+        $hourPoints = [];
+        foreach (range(1, 11) as $hour) {
+            $hourPoints[$hour] = $metric->getValuesByHour($hour);
         }
-        $points = array_reverse($points);
+        $hourPoints = array_reverse($hourPoints);
     ?>
     <li class="list-group-item metric">
         <div class="row">
@@ -26,12 +26,14 @@
         <div class="row">
             <div class="col-md-12">
                 <div>
-                    <canvas id="metric-{{ $metric->id }}" height="150" width="600"></canvas>
+                    <canvas id="metric-{{ $metric->id }}" height="125" width="600"></canvas>
                 </div>
             </div>
         </div>
         <script>
             (function () {
+                Chart.defaults.global.pointHitDetectionRadius = 1;
+
                 var hourList = [], date = new Date();
 
                 for (var i = 10; i >= 1; i--) {
@@ -40,25 +42,29 @@
 
                 hourList.push(moment(date).seconds(0).format('HH:ss'));
 
+                var hourPoints = [{{ implode(',', $hourPoints) }}];
+
                 var data = {
                     showTooltips: false,
                     labels: hourList,
                     datasets: [{
-                        fillColor: "rgba(220,220,220,0.2)",
-                        strokeColor: "rgba(220,220,220,1)",
+                        fillColor: "rgba(220,220,220,0.1)",
+                        strokeColor: "rgba(52,152,219,0.6)",
                         pointColor: "rgba(220,220,220,1)",
                         pointStrokeColor: "#fff",
                         pointHighlightFill: "#fff",
                         pointHighlightStroke: "rgba(220,220,220,1)",
-                        data: [{{ implode(',', $points) }}]
-                    }]
+                        data: hourPoints
+                    }],
                 };
 
                 var ctx = document.getElementById("metric-{{ $metric->id }}").getContext("2d");
                 new Chart(ctx).Line(data, {
+                    tooltipTemplate: "{{ $metric->name }}: <%= value %>{{ $metric->suffix }}",
                     scaleShowVerticalLines: true,
-                    pointDot: false,
-                    responsive: true
+                    scaleShowLabels: false,
+                    responsive: true,
+                    maintainAspectRatio: false
                 });
             }());
         </script>

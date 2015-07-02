@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -21,6 +21,8 @@ return [
         'site_timezone'    => '選擇你的時區',
         'site_locale'      => '選擇你的語言',
         'enable_google2fa' => '啟用 Google 兩步驗證',
+        'cache_driver'     => '',
+        'session_driver'   => '',
     ],
 
     // Login form fields
@@ -30,21 +32,25 @@ return [
         '2fauth'        => '驗證碼',
         'invalid'       => '錯誤的電郵地址或密碼',
         'invalid-token' => '錯誤的驗證碼',
-        'cookies'       => 'You must enable cookies to login.',
+        'cookies'       => '',
     ],
 
     // Incidents form fields
     'incidents' => [
-        'name'         => '名稱',
-        'status'       => '狀態',
-        'component'    => '組件',
-        'message'      => '信息',
-        'message-help' => '你可以使用 Markdown 。',
-        'scheduled_at' => '排期在什麼時候進行維護？',
-
-        'templates' => [
+        'name'               => '名稱',
+        'status'             => '狀態',
+        'component'          => '組件',
+        'message'            => '訊息',
+        'message-help'       => '你可以使用 Markdown 。',
+        'scheduled_at'       => '排期在什麼時候進行維護？',
+        'incident_time'      => '',
+        'notify_subscribers' => '',
+        'visibility'         => '',
+        'public'             => '',
+        'logged_in_only'     => '',
+        'templates'          => [
             'name'     => '名稱',
-            'template' => '模板',
+            'template' => '範本',
         ],
     ],
 
@@ -68,7 +74,7 @@ return [
         'name'             => '名稱',
         'suffix'           => '後綴',
         'description'      => '描述',
-        'description-help' => '你可以使用 Markdown 。',
+        'description-help' => '你也可以使用 Markdown',
         'display-chart'    => '在狀態頁上顯示圖表？',
         'default-value'    => '默認值',
         'calc_type'        => '指標的計算方法',
@@ -84,17 +90,22 @@ return [
     'settings' => [
         /// Application setup
         'app-setup' => [
-            'site-name'         => '網站名稱',
-            'site-url'          => '網站 URL',
-            'site-timezone'     => '網站時區',
-            'site-locale'       => '網站語言',
-            'date-format'       => '日期格式',
-            'display-graphs'    => '在狀態頁上顯示圖片？',
-            'about-this-page'   => '關於本站',
-            'days-of-incidents' => '顯示多少天前的事件？',
-            'banner'            => '圖片橫幅',
-            'banner-help'       => '橫幅寬度建議少於 930px 。',
-            'google-analytics'  => 'Google Analytics 代碼',
+            'site-name'              => '網站名稱',
+            'site-url'               => '網站 URL',
+            'site-timezone'          => '網站時區',
+            'site-locale'            => '網站語言',
+            'date-format'            => '日期格式',
+            'incident-date-format'   => '',
+            'display-graphs'         => '在狀態頁上顯示圖片？',
+            'about-this-page'        => '關於本站',
+            'days-of-incidents'      => '顯示多少天前的事件？',
+            'banner'                 => '圖片橫幅',
+            'banner-help'            => '橫幅寬度建議少於 930px 。',
+            'analytics_google'       => '',
+            'analytics_gosquared'    => '',
+            'analytics_piwik_url'    => '',
+            'analytics_piwik_siteid' => '',
+            'subscribers'            => '',
         ],
         'security' => [
             'allowed-domains'      => '容許訪問的域名',
@@ -124,12 +135,12 @@ return [
     'add'    => '增加',
     'save'   => '儲存',
     'update' => '更新',
-    'create' => '新增',
-    'edit'   => '修改',
+    'create' => '建立',
+    'edit'   => '編輯',
     'delete' => '刪除',
-    'submit' => '提交',
+    'submit' => '送出',
     'cancel' => '取消',
-    'remove' => '刪除',
+    'remove' => '移除',
 
     // Other
     'optional' => '* 可選項目',

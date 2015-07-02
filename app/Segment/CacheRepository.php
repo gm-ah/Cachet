@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,12 +19,14 @@ use Illuminate\Database\QueryException;
 class CacheRepository implements RepositoryInterface
 {
     /**
+     * The underlying segment repository instance.
+     *
      * @var \CachetHQ\Cachet\Segment\RepositoryInterface
      */
     protected $repository;
 
     /**
-     * Instantiates a new instance of the Cache Repository.
+     * Create a new segment cache repository instance.
      *
      * @param \CachetHQ\Cachet\Segment\RepositoryInterface $repository
      */
@@ -34,7 +36,7 @@ class CacheRepository implements RepositoryInterface
     }
 
     /**
-     * Determines whether to use the segment_write_key setting or to fetch a new.
+     * Returns the segment write key.
      *
      * @return string
      */
@@ -42,10 +44,9 @@ class CacheRepository implements RepositoryInterface
     {
         $writeKey = null;
 
-        // We might not be setup yet.
         try {
             // Firstly, does the setting exist?
-            if (false === ($writeKey = Setting::get('segment_write_key'))) {
+            if (null === ($writeKey = Setting::get('segment_write_key'))) {
                 // No, let's go fetch it.
                 $writeKey = $this->repository->fetch();
                 Setting::set('segment_write_key', $writeKey);

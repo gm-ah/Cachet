@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Redirect;
 class LoginThrottling
 {
     /**
-     *  Run the login throttling middleware.
+     * Run the login throttling middleware.
      *
      * We're verifying that the user is not attempting to brute force Cachet's
      * login system. If the user has reached the rate limit, then we're sending

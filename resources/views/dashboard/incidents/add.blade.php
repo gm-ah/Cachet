@@ -55,6 +55,13 @@
                                 {{ trans('cachet.incidents.status')[4] }}
                             </label>
                         </div>
+                        <div class="form-group">
+                            <label for="incident-name">{{ trans('forms.incidents.visibility') }}</label>
+                            <select name='incident[visible]' class="form-control">
+                                <option value='1' selected>{{ trans('forms.incidents.public') }}</option>
+                                <option value='0'>{{ trans('forms.incidents.logged_in_only') }}</option>
+                            </select>
+                        </div>
                         @if(!$componentsInGroups->isEmpty() || !$componentsOutGroups->isEmpty())
                         <div class="form-group">
                             <label>{{ trans('forms.incidents.component') }}</label>
@@ -74,17 +81,19 @@
                             <span class='help-block'>{{ trans('forms.optional') }}</span>
                         </div>
                         @endif
-                        <div class="form-group hidden" id='component-status'>
-                            <div class="well">
-                                <div class="radio-items">
-                                    @foreach(trans('cachet.components.status') as $statusID => $status)
-                                    <div class="radio-inline">
-                                        <label>
-                                            <input type="radio" name="incident[component_status]" value="{{ $statusID }}" >
-                                            {{ $status }}
-                                        </label>
+                        <div class="form-group hidden" id="component-status">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="radio-items">
+                                        @foreach(trans('cachet.components.status') as $statusID => $status)
+                                        <div class="radio-inline">
+                                            <label>
+                                                <input type="radio" name="incident[component_status]" value="{{ $statusID }}">
+                                                {{ $status }}
+                                            </label>
+                                        </div>
+                                        @endforeach
                                     </div>
-                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -93,6 +102,16 @@
                             <div class='markdown-control'>
                                 <textarea name="incident[message]" class="form-control autosize" rows="5" required>{{ Input::old('incident.message') }}</textarea>
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label>{{ trans('forms.incidents.incident_time') }}</label>
+                            <input type="text" name="incident[created_at]" class="form-control" rel="datepicker-any">
+                            <span class="help-block">{{ trans('forms.optional') }}</span>
+                        </div>
+                        <div class="form-group">
+                            <label>{{ trans('forms.incidents.notify_subscribers') }}</label>
+                            <input type="checkbox" name="incident[notify]" value="1" checked="{{ Input::old('incident.message', 'checked') }}">
+                            <span class="help-block">{{ trans('forms.optional') }}</span>
                         </div>
                     </fieldset>
 

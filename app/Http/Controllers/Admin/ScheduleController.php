@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,12 +11,12 @@
 
 namespace CachetHQ\Cachet\Http\Controllers\Admin;
 
+use CachetHQ\Cachet\Events\MaintenanceHasScheduledEvent;
 use CachetHQ\Cachet\Facades\Setting;
 use CachetHQ\Cachet\Http\Controllers\AbstractController;
 use CachetHQ\Cachet\Models\Incident;
 use CachetHQ\Cachet\Models\IncidentTemplate;
 use GrahamCampbell\Binput\Facades\Binput;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
@@ -47,7 +47,7 @@ class ScheduleController extends AbstractController
                 'icon'   => 'ion-android-checkmark-circle',
                 'active' => false,
             ],
-            'schedule'  => [
+            'schedule' => [
                 'title'  => trans('dashboard.schedule.schedule'),
                 'url'    => route('dashboard.schedule'),
                 'icon'   => 'ion-android-calendar',
@@ -93,7 +93,6 @@ class ScheduleController extends AbstractController
     public function addScheduleAction()
     {
         $scheduleData = Binput::get('incident');
-        $scheduleData['user_id'] = Auth::user()->id;
         // Parse the schedule date.
         $scheduledAt = Date::createFromFormat('d/m/Y H:i', $scheduleData['scheduled_at'], Setting::get('app_timezone'))
             ->setTimezone(Config::get('app.timezone'));
@@ -121,7 +120,7 @@ class ScheduleController extends AbstractController
 
             return Redirect::back()->withInput(Binput::all())
                 ->with('success', sprintf(
-                    '<strong>%s</strong> %s',
+                    '%s %s',
                     trans('dashboard.notifications.whoops'),
                     trans('dashboard.schedule.add.failure')
                 ))
@@ -134,10 +133,19 @@ class ScheduleController extends AbstractController
         ]);
 
         $successMsg = sprintf(
-            '<strong>%s</strong> %s',
+            '%s %s',
             trans('dashboard.notifications.awesome'),
             trans('dashboard.schedule.add.success')
         );
+
+        $isEnabled = (bool) Setting::get('enable_subscribers', false);
+        $mailAddress = env('MAIL_ADDRESS', false);
+        $mailFrom = env('MAIL_NAME', false);
+        $subscribersEnabled = $isEnabled && $mailAddress && $mailFrom;
+
+        if (array_get($scheduleData, 'notify') && $subscribersEnabled) {
+            event(new MaintenanceHasScheduledEvent($incident));
+        }
 
         return Redirect::back()->with('success', $successMsg);
     }
@@ -169,7 +177,6 @@ class ScheduleController extends AbstractController
     public function editScheduleAction(Incident $schedule)
     {
         $scheduleData = Binput::get('incident');
-        $scheduleData['user_id'] = Auth::user()->id;
         // Parse the schedule date.
         $scheduledAt = Date::createFromFormat('d/m/Y H:i', $scheduleData['scheduled_at'], Setting::get('app_timezone'))
             ->setTimezone(Config::get('app.timezone'));
@@ -197,8 +204,8 @@ class ScheduleController extends AbstractController
 
             return Redirect::back()->withInput(Binput::all())
                 ->with('title', sprintf(
-                    '<strong>%s</strong> %s',
-                    trans('dashboard.notifications.awesome'),
+                    '%s %s',
+                    trans('dashboard.notifications.whoops'),
                     trans('dashboard.schedule.edit.failure')
                 ))
                 ->with('errors', $schedule->getErrors());
@@ -210,7 +217,7 @@ class ScheduleController extends AbstractController
         ]);
 
         $successMsg = sprintf(
-            '<strong>%s</strong> %s',
+            '%s %s',
             trans('dashboard.notifications.awesome'),
             trans('dashboard.schedule.edit.success')
         );
@@ -234,7 +241,7 @@ class ScheduleController extends AbstractController
         $schedule->delete();
 
         return Redirect::back()->with('warning', sprintf(
-            '<strong>%s</strong> %s',
+            '%s %s',
             trans('dashboard.notifications.whoops'),
             trans('dashboard.schedule.delete.failure')
         ));

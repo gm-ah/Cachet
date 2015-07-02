@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,30 +11,33 @@
 
 namespace CachetHQ\Cachet\Providers;
 
+use Illuminate\Bus\Dispatcher;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap any application services.
+     * Boot the service provider.
+     *
+     * @param \Illuminate\Bus\Dispatcher $dispatcher
      */
-    public function boot()
+    public function boot(Dispatcher $dispatcher)
     {
-        //
+        $dispatcher->mapUsing(function ($command) {
+            return Dispatcher::simpleMapping($command, 'CachetHQ\Cachet\Commands', 'CachetHQ\Cachet\Handlers\Commands');
+        });
+
+        Str::macro('canonicalize', function ($url) {
+            return preg_replace('/([^\/])$/', '$1/', $url);
+        });
     }
 
     /**
-     * Register any application services.
-     *
-     * This service provider is a great spot to register your various container
-     * bindings with the application. As you can see, we are registering our
-     * "Registrar" implementation here. You can add your own bindings too!
+     * Register the service provider.
      */
     public function register()
     {
-        $this->app->bind(
-            'Illuminate\Contracts\Auth\Registrar',
-            'CachetHQ\Cachet\Services\Registrar'
-        );
+        $this->app->bind('Illuminate\Contracts\Auth\Registrar', 'CachetHQ\Cachet\Services\Registrar');
     }
 }

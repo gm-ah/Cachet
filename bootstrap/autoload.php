@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -36,8 +36,6 @@ require __DIR__.'/../vendor/autoload.php';
 |
 */
 
-$compiledPath = __DIR__.'/../vendor/compiled.php';
-
-if (file_exists($compiledPath)) {
+if (file_exists($compiledPath = __DIR__.'/cache/compiled.php')) {
     require $compiledPath;
 }

@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,31 +12,13 @@
 namespace CachetHQ\Cachet\Presenters;
 
 use CachetHQ\Cachet\Facades\Setting;
-use CachetHQ\Cachet\Models\Incident;
+use CachetHQ\Cachet\Presenters\Traits\TimestampsTrait;
 use GrahamCampbell\Markdown\Facades\Markdown;
 use Jenssegers\Date\Date;
-use McCool\LaravelAutoPresenter\BasePresenter;
 
-class IncidentPresenter extends BasePresenter
+class IncidentPresenter extends AbstractPresenter
 {
-    /**
-     * Time zone setting.
-     *
-     * @var string
-     */
-    protected $tz;
-
-    /**
-     * Create a incident presenter instance.
-     *
-     * @param object $resource
-     */
-    public function __construct($resource)
-    {
-        parent::__construct($resource);
-
-        $this->tz = Setting::get('app_timezone');
-    }
+    use TimestampsTrait;
 
     /**
      * Renders the message from Markdown into HTML.
@@ -56,7 +38,7 @@ class IncidentPresenter extends BasePresenter
     public function created_at_diff()
     {
         return (new Date($this->wrappedObject->created_at))
-            ->setTimezone($this->tz)
+            ->setTimezone($this->setting->get('app_timezone'))
             ->diffForHumans();
     }
 
@@ -68,8 +50,18 @@ class IncidentPresenter extends BasePresenter
     public function created_at_formatted()
     {
         return ucfirst((new Date($this->wrappedObject->created_at))
-            ->setTimezone($this->tz)
-            ->format('l jS F Y H:i:s'));
+            ->setTimezone($this->setting->get('app_timezone'))
+            ->format($this->setting->get('incident_date_format', 'l jS F Y H:i:s')));
+    }
+
+    /**
+     * Formats the created_at time ready to be used by bootstrap-datetimepicker.
+     *
+     * @return string
+     */
+    public function created_at_datetimepicker()
+    {
+        return $this->wrappedObject->created_at->setTimezone($this->setting->get('app_timezone'))->format('d/m/Y H:i');
     }
 
     /**
@@ -79,7 +71,18 @@ class IncidentPresenter extends BasePresenter
      */
     public function created_at_iso()
     {
-        return $this->wrappedObject->created_at->setTimezone($this->tz)->toISO8601String();
+        return $this->wrappedObject->created_at->setTimezone($this->setting->get('app_timezone'))->toISO8601String();
+    }
+
+    /**
+     * Present formatted date time.
+     *
+     * @return string
+     */
+    public function scheduled_at()
+    {
+        return (new Date($this->wrappedObject->scheduled_at))
+            ->setTimezone($this->setting->get('app_timezone'))->toDateTimeString();
     }
 
     /**
@@ -90,7 +93,7 @@ class IncidentPresenter extends BasePresenter
     public function scheduled_at_diff()
     {
         return (new Date($this->wrappedObject->scheduled_at))
-            ->setTimezone($this->tz)
+            ->setTimezone($this->setting->get('app_timezone'))
             ->diffForHumans();
     }
 
@@ -102,8 +105,8 @@ class IncidentPresenter extends BasePresenter
     public function scheduled_at_formatted()
     {
         return ucfirst((new Date($this->wrappedObject->scheduled_at))
-            ->setTimezone($this->tz)
-            ->format('l jS F Y H:i:s'));
+            ->setTimezone($this->setting->get('app_timezone'))
+            ->format($this->setting->get('incident_date_format', 'l jS F Y H:i:s')));
     }
 
     /**
@@ -113,7 +116,7 @@ class IncidentPresenter extends BasePresenter
      */
     public function scheduled_at_iso()
     {
-        return $this->wrappedObject->scheduled_at->setTimezone($this->tz)->toISO8601String();
+        return $this->wrappedObject->scheduled_at->setTimezone($this->setting->get('app_timezone'))->toISO8601String();
     }
 
     /**
@@ -123,7 +126,7 @@ class IncidentPresenter extends BasePresenter
      */
     public function scheduled_at_datetimepicker()
     {
-        return $this->wrappedObject->scheduled_at->setTimezone($this->tz)->format('d/m/Y H:i');
+        return $this->wrappedObject->scheduled_at->setTimezone($this->setting->get('app_timezone'))->format('d/m/Y H:i');
     }
 
     /**
@@ -147,5 +150,19 @@ class IncidentPresenter extends BasePresenter
             default: // Something actually broke, this shouldn't happen.
                 return '';
         }
+    }
+
+    /**
+     * Convert the presenter instance to an array.
+     *
+     * @return string[]
+     */
+    public function toArray()
+    {
+        return array_merge($this->wrappedObject->toArray(), [
+            'scheduled_at' => $this->created_at(),
+            'created_at'   => $this->created_at(),
+            'updated_at'   => $this->updated_at(),
+        ]);
     }
 }

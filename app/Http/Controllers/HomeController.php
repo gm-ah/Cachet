@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,10 +16,10 @@ use CachetHQ\Cachet\Models\Component;
 use CachetHQ\Cachet\Models\ComponentGroup;
 use CachetHQ\Cachet\Models\Incident;
 use CachetHQ\Cachet\Models\Metric;
-use Carbon\Carbon;
 use Exception;
 use GrahamCampbell\Binput\Facades\Binput;
 use GrahamCampbell\Markdown\Facades\Markdown;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Jenssegers\Date\Date;
 
@@ -32,12 +32,10 @@ class HomeController extends AbstractController
      */
     public function showIndex()
     {
-        $today = Carbon::now();
-        $startDate = Carbon::now();
+        $today = Date::now();
+        $startDate = Date::now();
 
-        segment_track('Status Page', [
-            'event' => 'Landed',
-        ]);
+        segment_page('Status Page');
 
         // Check if we have another starting date
         if (Binput::has('start_date')) {
@@ -48,16 +46,6 @@ class HomeController extends AbstractController
                 segment_track('Status Page', [
                     'start_date' => $oldDate->format('Y-m-d'),
                 ]);
-
-                if (Setting::get('app_tracking')) {
-                    Segment::track([
-                        'userId'     => Config::get('app.key'),
-                        'event'      => 'Home Page',
-                        'properties' => [
-                            'start_date' => $oldDate,
-                        ],
-                    ]);
-                }
 
                 // If trying to get a future date fallback to today
                 if ($today->gt($oldDate)) {
@@ -78,7 +66,9 @@ class HomeController extends AbstractController
         $incidentDays = range(0, $daysToShow - 1);
         $dateTimeZone = Setting::get('app_timezone');
 
-        $allIncidents = Incident::notScheduled()->whereBetween('created_at', [
+        $incidentVisiblity = Auth::check() ? 0 : 1;
+
+        $allIncidents = Incident::notScheduled()->where('visible', '>=', $incidentVisiblity)->whereBetween('created_at', [
             $startDate->copy()->subDays($daysToShow)->format('Y-m-d').' 00:00:00',
             $startDate->format('Y-m-d').' 23:59:59',
         ])->orderBy('created_at', 'desc')->get()->groupBy(function (Incident $incident) use ($dateTimeZone) {
@@ -96,16 +86,16 @@ class HomeController extends AbstractController
         }
 
         // Sort the array so it takes into account the added days
-        $allIncidents->sortBy(function ($value, $key) {
+        $allIncidents = $allIncidents->sortBy(function ($value, $key) {
             return strtotime($key);
-        }, SORT_REGULAR, true);
+        }, SORT_REGULAR, true)->all();
 
         // Scheduled maintenance code.
         $scheduledMaintenance = Incident::scheduled()->orderBy('scheduled_at')->get();
 
         // Component & Component Group lists.
         $usedComponentGroups = Component::where('group_id', '>', 0)->groupBy('group_id')->lists('group_id');
-        $componentGroups = ComponentGroup::whereIn('id', $usedComponentGroups)->get();
+        $componentGroups = ComponentGroup::whereIn('id', $usedComponentGroups)->orderBy('order')->get();
         $ungroupedComponents = Component::where('group_id', 0)->orderBy('order')->orderBy('created_at')->get();
 
         $canPageBackward = Incident::notScheduled()->where('created_at', '<', $startDate->format('Y-m-d'))->count() != 0;
@@ -117,12 +107,12 @@ class HomeController extends AbstractController
             'metrics'              => $metrics,
             'allIncidents'         => $allIncidents,
             'scheduledMaintenance' => $scheduledMaintenance,
-            'pageTitle'            => Setting::get('app_name'),
             'aboutApp'             => Markdown::convertToHtml(Setting::get('app_about')),
             'canPageForward'       => (bool) $today->gt($startDate),
             'canPageBackward'      => $canPageBackward,
             'previousDate'         => $startDate->copy()->subDays($daysToShow)->toDateString(),
             'nextDate'             => $startDate->copy()->addDays($daysToShow)->toDateString(),
+            'pageTitle'            => Setting::get('app_name').' Status',
         ]);
     }
 }

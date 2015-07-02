@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -84,17 +84,20 @@ return [
     'settings' => [
         /// Application setup
         'app-setup' => [
-            'site-name'         => 'Naam site',
-            'site-url'          => 'URL site',
-            'site-timezone'     => 'Tijdzone site',
-            'site-locale'       => 'Taal site',
-            'date-format'       => 'Datumformaat',
-            'display-graphs'    => 'Grafieken tonen op statuspagina?',
-            'about-this-page'   => 'Over deze pagina',
-            'days-of-incidents' => 'Hoeveel dagen van incidenten tonen?',
-            'banner'            => 'Bannerafbeelding',
-            'banner-help'       => 'Het wordt aangeraden om geen bestanden groter dan 930px breed te uploaden.',
-            'google-analytics'  => 'Google Analytics-code',
+            'site-name'              => 'Naam site',
+            'site-url'               => 'URL site',
+            'site-timezone'          => 'Tijdzone site',
+            'site-locale'            => 'Taal site',
+            'date-format'            => 'Datumformaat',
+            'display-graphs'         => 'Grafieken tonen op statuspagina?',
+            'about-this-page'        => 'Over deze pagina',
+            'days-of-incidents'      => 'Hoeveel dagen van incidenten tonen?',
+            'banner'                 => 'Bannerafbeelding',
+            'banner-help'            => 'Het wordt aangeraden om geen bestanden groter dan 930px breed te uploaden.',
+            'analytics_google'       => 'Google Analytics code',
+            'analytics_gosquared'    => 'GoSquared Analytics code',
+            'analytics_piwik_url'    => 'URL of your Piwik instance (without http(s)://)',
+            'analytics_piwik_siteid' => 'Piwik\'s site id',
         ],
         'security' => [
             'allowed-domains'      => 'Toegestane domeinen',

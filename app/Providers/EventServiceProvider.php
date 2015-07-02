@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,7 +11,6 @@
 
 namespace CachetHQ\Cachet\Providers;
 
-use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -22,20 +21,14 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'event.name' => [
-            'EventListener',
+        'CachetHQ\Cachet\Events\CustomerHasSubscribedEvent' => [
+            'CachetHQ\Cachet\Handlers\Events\SendSubscriberVerificationEmailHandler',
+        ],
+        'CachetHQ\Cachet\Events\IncidentHasReportedEvent' => [
+            'CachetHQ\Cachet\Handlers\Events\SendIncidentEmailNotificationHandler',
+        ],
+        'CachetHQ\Cachet\Events\MaintenanceHasScheduledEvent' => [
+            'CachetHQ\Cachet\Handlers\Events\SendMaintenanceEmailNotificationHandler',
         ],
     ];
-
-    /**
-     * Register any other events for your application.
-     *
-     * @param \Illuminate\Contracts\Events\Dispatcher $events
-     */
-    public function boot(DispatcherContract $events)
-    {
-        parent::boot($events);
-
-        //
-    }
 }

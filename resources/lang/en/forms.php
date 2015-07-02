@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -21,6 +21,8 @@ return [
         'site_timezone'    => 'Select your timezone',
         'site_locale'      => 'Select your language',
         'enable_google2fa' => 'Enable Google Two Factor Authentication',
+        'cache_driver'     => 'Cache Driver',
+        'session_driver'   => 'Session Driver',
     ],
 
     // Login form fields
@@ -35,14 +37,18 @@ return [
 
     // Incidents form fields
     'incidents' => [
-        'name'         => 'Name',
-        'status'       => 'Status',
-        'component'    => 'Component',
-        'message'      => 'Message',
-        'message-help' => 'You may also use Markdown.',
-        'scheduled_at' => 'When to schedule the maintenance for?',
-
-        'templates' => [
+        'name'               => 'Name',
+        'status'             => 'Status',
+        'component'          => 'Component',
+        'message'            => 'Message',
+        'message-help'       => 'You may also use Markdown.',
+        'scheduled_at'       => 'When to schedule the maintenance for?',
+        'incident_time'      => 'When did this incident occur?',
+        'notify_subscribers' => 'Notify subscribers',
+        'visibility'         => 'Incident Visibility',
+        'public'             => 'Viewable by public',
+        'logged_in_only'     => 'Only visible logged in users',
+        'templates'          => [
             'name'     => 'Name',
             'template' => 'Template',
         ],
@@ -84,17 +90,22 @@ return [
     'settings' => [
         /// Application setup
         'app-setup' => [
-            'site-name'         => 'Site Name',
-            'site-url'          => 'Site URL',
-            'site-timezone'     => 'Site Timezone',
-            'site-locale'       => 'Site Language',
-            'date-format'       => 'Date Format',
-            'display-graphs'    => 'Display graphs on status page?',
-            'about-this-page'   => 'About this page',
-            'days-of-incidents' => 'How many days of incidents to show?',
-            'banner'            => 'Banner Image',
-            'banner-help'       => "It's recommended that you upload files no bigger than 930px wide .",
-            'google-analytics'  => 'Google Analytics code',
+            'site-name'              => 'Site Name',
+            'site-url'               => 'Site URL',
+            'site-timezone'          => 'Site Timezone',
+            'site-locale'            => 'Site Language',
+            'date-format'            => 'Date Format',
+            'incident-date-format'   => 'Incident Timestamp Format',
+            'display-graphs'         => 'Display graphs on status page?',
+            'about-this-page'        => 'About this page',
+            'days-of-incidents'      => 'How many days of incidents to show?',
+            'banner'                 => 'Banner Image',
+            'banner-help'            => "It's recommended that you upload files no bigger than 930px wide .",
+            'analytics_google'       => 'Google Analytics code',
+            'analytics_gosquared'    => 'GoSquared Analytics code',
+            'analytics_piwik_url'    => 'URL of your Piwik instance (without http(s)://)',
+            'analytics_piwik_siteid' => 'Piwik\'s site id',
+            'subscribers'            => 'Allow people to signup to email notifications?',
         ],
         'security' => [
             'allowed-domains'      => 'Allowed domains',

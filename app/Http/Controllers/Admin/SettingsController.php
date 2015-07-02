@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -172,6 +172,10 @@ class SettingsController extends AbstractController
 
         try {
             foreach (Binput::except(['app_banner', 'remove_banner']) as $settingName => $settingValue) {
+                if ($settingName === 'app_analytics_pi_url') {
+                    $settingValue = rtrim($settingValue, '/');
+                }
+
                 Setting::firstOrCreate([
                     'name' => $settingName,
                 ])->update([

@@ -3,14 +3,13 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
 use CachetHQ\Cachet\Models\Setting;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 
 class SettingsTableSeeder extends Seeder
@@ -20,8 +19,6 @@ class SettingsTableSeeder extends Seeder
      */
     public function run()
     {
-        Model::unguard();
-
         $defaultSettings = [
             [
                 'name'  => 'app_name',
@@ -54,6 +51,14 @@ class SettingsTableSeeder extends Seeder
             [
                 'name'  => 'app_analytics',
                 'value' => 'UA-58442674-3',
+            ],
+            [
+                'name'  => 'app_analytics_gs',
+                'value' => 'GSN-712462-P',
+            ],
+            [
+                'name'  => 'display_graphs',
+                'value' => '1',
             ],
         ];
 

@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -43,8 +43,8 @@ class MetricController extends AbstractController
     public function showAddMetric()
     {
         return View::make('dashboard.metrics.add')->with([
-            'pageTitle'            => trans('dashboard.metrics.add.title').' - '.trans('dashboard.dashboard'),
-            'metricMetricPoints'   => MetricPoint::all(),
+            'pageTitle'          => trans('dashboard.metrics.add.title').' - '.trans('dashboard.dashboard'),
+            'metricMetricPoints' => MetricPoint::all(),
         ]);
     }
 
@@ -79,7 +79,7 @@ class MetricController extends AbstractController
 
             return Redirect::back()->withInput(Binput::all())
                 ->with('title', sprintf(
-                    '<strong>%s</strong> %s',
+                    '%s %s',
                     trans('dashboard.notifications.whoops'),
                     trans('dashboard.metrics.add.failure')
                 ))
@@ -92,7 +92,7 @@ class MetricController extends AbstractController
         ]);
 
         $successMsg = sprintf(
-            '<strong>%s</strong> %s',
+            '%s %s',
             trans('dashboard.notifications.awesome'),
             trans('dashboard.metrics.add.success')
         );
@@ -119,13 +119,13 @@ class MetricController extends AbstractController
      */
     public function createMetricPointAction()
     {
-        $_point = Binput::get('point');
+        $_point = Binput::get('point', null, false);
         $point = MetricPoint::create($_point);
 
         if (!$point->isValid()) {
             return Redirect::back()->withInput(Binput::all())
                 ->with('title', sprintf(
-                    '<strong>%s</strong> %s',
+                    '%s %s',
                     trans('dashboard.notifications.awesome'),
                     trans('dashboard.metrics.points.add.failure')
                 ))
@@ -133,7 +133,7 @@ class MetricController extends AbstractController
         }
 
         $successMsg = sprintf(
-            '<strong>%s</strong> %s',
+            '%s %s',
             trans('dashboard.notifications.awesome'),
             trans('dashboard.metrics.points.add.success')
         );
@@ -165,8 +165,8 @@ class MetricController extends AbstractController
     public function showEditMetricAction(Metric $metric)
     {
         return View::make('dashboard.metrics.edit')->with([
-            'pageTitle'  => trans('dashboard.metrics.edit.title').' - '.trans('dashboard.dashboard'),
-            'metric'     => $metric,
+            'pageTitle' => trans('dashboard.metrics.edit.title').' - '.trans('dashboard.dashboard'),
+            'metric'    => $metric,
         ]);
     }
 
@@ -179,8 +179,8 @@ class MetricController extends AbstractController
      */
     public function editMetricAction(Metric $metric)
     {
-        $_metric = Binput::get('metric');
-        $metric->update($_metric);
+        $metricData = Binput::get('metric', null, false);
+        $metric->update($metricData);
 
         if (!$metric->isValid()) {
             segment_track('Dashboard', [
@@ -202,7 +202,7 @@ class MetricController extends AbstractController
         ]);
 
         $successMsg = sprintf(
-            '<strong>%s</strong> %s',
+            '%s %s',
             trans('dashboard.notifications.awesome'),
             trans('dashboard.metrics.edit.success')
         );

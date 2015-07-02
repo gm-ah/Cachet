@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -84,17 +84,20 @@ return [
     'settings' => [
         /// Application setup
         'app-setup' => [
-            'site-name'         => 'Nama Situs',
-            'site-url'          => 'URL',
-            'site-timezone'     => 'Zona Waktu',
-            'site-locale'       => 'Bahasa',
-            'date-format'       => 'Format Tanggal',
-            'display-graphs'    => 'Tampilkan grafik di halaman status?',
-            'about-this-page'   => 'Tentang halaman ini',
-            'days-of-incidents' => 'Berapa hari insiden akan ditampilkan?',
-            'banner'            => 'Gambar Banner',
-            'banner-help'       => 'Disarankan gambar yang anda unggah tidak lebih lebar dari 930px.',
-            'google-analytics'  => 'Kode Google Analytics',
+            'site-name'              => 'Nama Situs',
+            'site-url'               => 'URL',
+            'site-timezone'          => 'Zona Waktu',
+            'site-locale'            => 'Bahasa',
+            'date-format'            => 'Format Tanggal',
+            'display-graphs'         => 'Tampilkan grafik di halaman status?',
+            'about-this-page'        => 'Tentang halaman ini',
+            'days-of-incidents'      => 'Berapa hari insiden akan ditampilkan?',
+            'banner'                 => 'Gambar Banner',
+            'banner-help'            => 'Disarankan gambar yang anda unggah tidak lebih lebar dari 930px.',
+            'analytics_google'       => 'Google Analytics code',
+            'analytics_gosquared'    => 'GoSquared Analytics code',
+            'analytics_piwik_url'    => 'URL of your Piwik instance (without http(s)://)',
+            'analytics_piwik_siteid' => 'Piwik\'s site id',
         ],
         'security' => [
             'allowed-domains'      => 'Domain yang dibolehkan',

@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -35,16 +35,16 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth'               => 'CachetHQ\Cachet\Http\Middleware\Authenticate',
-        'auth.api'           => 'CachetHQ\Cachet\Http\Middleware\ApiAuthenticate',
-        'auth.basic'         => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
-        'guest'              => 'CachetHQ\Cachet\Http\Middleware\RedirectIfAuthenticated',
-        'csrf'               => 'CachetHQ\Cachet\Http\Middleware\VerifyCsrfToken',
-        'admin'              => 'CachetHQ\Cachet\Http\Middleware\Admin',
-        'login.throttling'   => 'CachetHQ\Cachet\Http\Middleware\LoginThrottling',
-        'app.isSetup'        => 'CachetHQ\Cachet\Http\Middleware\AppIsSetup',
-        'app.hasSetting'     => 'CachetHQ\Cachet\Http\Middleware\HasSetting',
-        'allowedDomains'     => 'CachetHQ\Cachet\Http\Middleware\AllowedDomains',
-        'cors'               => 'CachetHQ\Cachet\Http\Middleware\Cors',
+        'auth'             => 'CachetHQ\Cachet\Http\Middleware\Authenticate',
+        'auth.api'         => 'CachetHQ\Cachet\Http\Middleware\ApiAuthenticate',
+        'auth.basic'       => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
+        'guest'            => 'CachetHQ\Cachet\Http\Middleware\RedirectIfAuthenticated',
+        'csrf'             => 'Illuminate\Foundation\Http\Middleware\VerifyCsrfToken',
+        'admin'            => 'CachetHQ\Cachet\Http\Middleware\Admin',
+        'login.throttling' => 'CachetHQ\Cachet\Http\Middleware\LoginThrottling',
+        'app.isSetup'      => 'CachetHQ\Cachet\Http\Middleware\AppIsSetup',
+        'app.hasSetting'   => 'CachetHQ\Cachet\Http\Middleware\HasSetting',
+        'app.subscribers'  => 'CachetHQ\Cachet\Http\Middleware\SubscribersConfigured',
+        'accept'           => 'CachetHQ\Cachet\Http\Middleware\Acceptable',
     ];
 }

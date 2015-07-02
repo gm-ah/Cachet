@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,14 +13,14 @@ namespace CachetHQ\Cachet\Composers;
 
 use CachetHQ\Cachet\Models\Component;
 use CachetHQ\Cachet\Models\Incident;
-use Illuminate\View\View;
+use Illuminate\Contracts\View\View;
 
 class IndexComposer
 {
     /**
      * Index page view composer.
      *
-     * @param \Illuminate\View\View $view
+     * @param \Illuminate\Contracts\View\View $view
      */
     public function compose(View $view)
     {
@@ -28,6 +28,7 @@ class IndexComposer
         $withData = [
             'systemStatus'  => 'danger',
             'systemMessage' => trans('cachet.service.bad'),
+            'favicon'       => 'favicon-high-alert',
         ];
 
         if (Component::notStatus(1)->count() === 0) {
@@ -39,7 +40,12 @@ class IndexComposer
                 $withData = [
                     'systemStatus'  => 'success',
                     'systemMessage' => trans('cachet.service.good'),
+                    'favicon'       => 'favicon',
                 ];
+            }
+        } else {
+            if (Component::whereIn('status', [2, 3])->count() > 0) {
+                $withData['favicon'] = 'favicon-medium-alert';
             }
         }
 

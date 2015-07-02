@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -20,19 +20,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Hash;
 use Watson\Validating\ValidatingTrait;
 
-/**
- * @property int            $id
- * @property string         $username
- * @property string         $password
- * @property string         $remember_token
- * @property string         $google_2fa_secret
- * @property string         $email
- * @property string         $api_key
- * @property int            $active
- * @property int            $level
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- */
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
     use Authenticatable, CanResetPassword, ValidatingTrait;
@@ -43,7 +30,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @var string[]
      */
     protected $rules = [
-        'username' => 'required|alpha_num|unique:users',
+        'username' => ['required', 'regex:/\A(?!.*[:;]-\))[ -~]+\z/', 'unique:users'],
         'email'    => 'required|email|unique:users',
         'password' => 'required',
     ];

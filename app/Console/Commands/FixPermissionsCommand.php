@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -28,7 +28,7 @@ class FixPermissionsCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Fixes file and directory permissions. Ensures SQLite database is writeable.';
+    protected $description = 'Fixes file and directory permissions. Ensures SQLite database is writable.';
 
     /**
      * Path to the storage directory.

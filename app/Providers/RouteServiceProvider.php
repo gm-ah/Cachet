@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -26,7 +26,7 @@ class RouteServiceProvider extends ServiceProvider
     protected $namespace = 'CachetHQ\Cachet\Http\Controllers';
 
     /**
-     * Define your route model bindings, pattern filters, etc.
+     * Define the route model bindings, pattern filters, etc.
      *
      * @param \Illuminate\Routing\Router $router
      */

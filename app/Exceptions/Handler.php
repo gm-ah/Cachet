@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,11 +11,11 @@
 
 namespace CachetHQ\Cachet\Exceptions;
 
-use CachetHQ\Cachet\Repositories\InvalidModelValidationException;
 use Exception;
-use GrahamCampbell\Exceptions\ExceptionHandler as ExceptionHandler;
+use GrahamCampbell\Exceptions\ExceptionHandler;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Response;
+use Symfony\Component\HttpKernel\Exception\HttpNotFoundException;
 
 class Handler extends ExceptionHandler
 {
@@ -25,7 +25,7 @@ class Handler extends ExceptionHandler
      * @var string[]
      */
     protected $dontReport = [
-        'Symfony\Component\HttpKernel\Exception\HttpException',
+        HttpNotFoundException::class,
     ];
 
     /**
@@ -38,14 +38,8 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        if ($request->is('api*')) {
-            if ($e instanceof InvalidModelValidationException) {
-                return Response::make(['status_code' => 400, 'message' => 'Bad Request'], 400);
-            }
-
-            if ($e instanceof ModelNotFoundException) {
-                return Response::make(['status_code' => 404, 'error' => 'Resource not found'], 404);
-            }
+        if ($e instanceof ModelNotFoundException) {
+            $e = new HttpNotFoundException('Resource not found');
         }
 
         return parent::render($request, $e);

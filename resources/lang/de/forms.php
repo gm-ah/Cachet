@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -81,17 +81,20 @@ return [
     'settings' => [
         /// Application setup
         'app-setup' => [
-            'site-name'         => 'Name der Seite',
-            'site-url'          => 'URL der Seite',
-            'site-timezone'     => 'Wählen Sie Ihre Zeitzone',
-            'site-locale'       => 'Wählen Sie Ihre Sprache',
-            'date-format'       => 'Datumsformat',
-            'display-graphs'    => 'Display graphs on status page?',
-            'about-this-page'   => 'Über diese Seite',
-            'days-of-incidents' => 'Wie viele (vergangene) Tage sollen angezeigt werden?',
-            'banner'            => 'Banner-Bild',
-            'banner-help'       => 'Wählen Sie möglichst ein Bild mit 930 px Breite.',
-            'google-analytics'  => 'Google Analytics Code',
+            'site-name'              => 'Name der Seite',
+            'site-url'               => 'URL der Seite',
+            'site-timezone'          => 'Wählen Sie Ihre Zeitzone',
+            'site-locale'            => 'Wählen Sie Ihre Sprache',
+            'date-format'            => 'Datumsformat',
+            'display-graphs'         => 'Display graphs on status page?',
+            'about-this-page'        => 'Über diese Seite',
+            'days-of-incidents'      => 'Wie viele (vergangene) Tage sollen angezeigt werden?',
+            'banner'                 => 'Banner-Bild',
+            'banner-help'            => 'Wählen Sie möglichst ein Bild mit 930 px Breite.',
+            'analytics_google'       => 'Google Analytics code',
+            'analytics_gosquared'    => 'GoSquared Analytics code',
+            'analytics_piwik_url'    => 'URL of your Piwik instance (without http(s)://)',
+            'analytics_piwik_siteid' => 'Piwik\'s site id',
         ],
         'security' => [
             'allowed-domains'      => 'Erlaubte Domains',

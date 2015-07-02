@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -127,7 +127,7 @@ return [
             'success' => 'Teamlid toegevoegd.',
             'failure' => 'Er ging iets mis met de component.',
         ],
-        'edit'        => [
+        'edit' => [
             'title'   => 'Profiel bijwerken',
             'success' => 'Profiel bijgewerkt.',
             'failure' => 'Er ging iets mis met het bijwerken.',
@@ -172,7 +172,7 @@ return [
     'logout'      => 'Uitloggen',
 
     // Notifications
-    'notifications'     => [
+    'notifications' => [
         'notifications' => 'Meldingen',
         'awesome'       => 'Geweldig.',
         'whoops'        => 'Oeps.',

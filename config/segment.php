@@ -3,28 +3,38 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
 return [
+
     /*
-     * Whether to enable Segment or not.
-     */
+    |--------------------------------------------------------------------------
+    | Enable Laravel Segment
+    |--------------------------------------------------------------------------
+    |
+    | This option specifies if Segment tracking is enabled.
+    |
+    | Default: true
+    |
+    */
+
     'enabled' => true,
 
     /*
-     * The key which enables you to write to the Segment.com API.
-     */
+    |--------------------------------------------------------------------------
+    | Segment Write Key
+    |--------------------------------------------------------------------------
+    |
+    | This option specifies key which enables you to write to Segment's API.
+    |
+    | Default: true
+    |
+    */
+
     'write_key' => '',
 
-    /*
-     * Other configurations. Currently unused.
-     */
-    'consumer'      => 'socket',
-    'debug'         => false,
-    'ssl'           => true,
-    'error_handler' => null,
 ];

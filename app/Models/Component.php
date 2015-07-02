@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,25 +11,14 @@
 
 namespace CachetHQ\Cachet\Models;
 
+use CachetHQ\Cachet\Presenters\ComponentPresenter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use McCool\LaravelAutoPresenter\HasPresenter;
 use Watson\Validating\ValidatingTrait;
 
-/**
- * @property int            $id
- * @property int            $user_id
- * @property string         $name
- * @property string         $description
- * @property int            $status
- * @property string         $link
- * @property int            $order
- * @property int            $group_id
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property \Carbon\Carbon $deleted_at
- */
-class Component extends Model
+class Component extends Model implements HasPresenter
 {
     use SoftDeletes, ValidatingTrait;
 
@@ -39,10 +28,9 @@ class Component extends Model
      * @var string[]
      */
     protected $rules = [
-        'user_id' => 'integer|required',
-        'name'    => 'required',
-        'status'  => 'integer|required',
-        'link'    => 'url',
+        'name'   => 'required|string',
+        'status' => 'integer|required',
+        'link'   => 'url',
     ];
 
     /**
@@ -54,7 +42,6 @@ class Component extends Model
         'name',
         'description',
         'status',
-        'user_id',
         'tags',
         'link',
         'order',
@@ -87,7 +74,7 @@ class Component extends Model
      */
     public function group()
     {
-        return $this->belongsTo('CachetHQ\Cachet\Models\ComponentGroup', 'group_id', 'id');
+        return $this->belongsTo(ComponentGroup::class, 'group_id', 'id');
     }
 
     /**
@@ -97,7 +84,7 @@ class Component extends Model
      */
     public function incidents()
     {
-        return $this->hasMany('CachetHQ\Cachet\Models\Incident', 'component_id', 'id');
+        return $this->hasMany(Incident::class, 'component_id', 'id');
     }
 
     /**
@@ -107,7 +94,7 @@ class Component extends Model
      */
     public function tags()
     {
-        return $this->belongsToMany('CachetHQ\Cachet\Models\Tag');
+        return $this->belongsToMany(Tag::class);
     }
 
     /**
@@ -158,5 +145,15 @@ class Component extends Model
         });
 
         return implode(', ', $tags->toArray());
+    }
+
+    /**
+     * Get the presenter class.
+     *
+     * @return string
+     */
+    public function getPresenterClass()
+    {
+        return ComponentPresenter::class;
     }
 }

@@ -12,7 +12,13 @@
                 <div class="col-xs-10 col-xs-offset-2 col-sm-11 col-sm-offset-0">
                     <div class="panel panel-message">
                         <div class="panel-heading">
-                            <strong>{{ $incident->name }}</strong>{{ $incident->isScheduled ? trans("cachet.incidents.scheduled_at", ["timestamp" => $incident->scheduled_at->diffForHumans()]) : null }}
+                            @if($loggedUser)
+                            <div class="pull-right btn-group">
+                                <a href="/dashboard/incidents/{{ $incident->id }}/edit" class="btn btn-default">{{ trans('forms.edit') }}</a>
+                                <a href="/dashboard/incidents/{{ $incident->id }}/delete" class="btn btn-danger confirm-action" data-method='DELETE'>{{ trans('forms.delete') }}</a>
+                            </div>
+                            @endif
+                            <strong>{{ $incident->name }}</strong>{{ $incident->isScheduled ? trans("cachet.incidents.scheduled_at", ["timestamp" => $incident->scheduled_at_diff]) : null }}
                             <br>
                             <small class="date">
                                 <abbr class="timeago" data-toggle="tooltip" data-placement="right" title="{{ $incident->created_at_formatted }}" data-timeago="{{ $incident->created_at_iso }}">
@@ -20,7 +26,7 @@
                             </small>
                         </div>
                         <div class="panel-body">
-                            <p>{!! $incident->formattedMessage !!}</p>
+                            {!! $incident->formattedMessage !!}
                         </div>
                     </div>
                 </div>

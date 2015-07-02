@@ -3,7 +3,7 @@
 /*
  * This file is part of Cachet.
  *
- * (c) James Brooks <james@cachethq.io>
+ * (c) Cachet HQ <support@cachethq.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -52,8 +52,11 @@ if (!function_exists('segment_identify')) {
                     return Segment::identify([
                         'anonymousId' => Config::get('app.key'),
                         'context'     => [
-                            'locale'   => Config::get('app.locale'),
-                            'timezone' => Setting::get('app_timezone'),
+                            'locale'         => Config::get('app.locale'),
+                            'timezone'       => Setting::get('app_timezone'),
+                            'DB_DRIVER'      => getenv('DB_DRIVER'),
+                            'CACHE_DRIVER'   => getenv('CACHE_DRIVER'),
+                            'SESSION_DRIVER' => getenv('SESSION_DRIVER'),
                         ],
                     ]);
                 } else {
@@ -75,7 +78,7 @@ if (!function_exists('segment_track')) {
      *
      * @return bool
      */
-    function segment_track($event, array $properties)
+    function segment_track($event, array $properties = [])
     {
         if (Config::get('segment.write_key')) {
             try {
@@ -85,8 +88,11 @@ if (!function_exists('segment_track')) {
                         'event'       => $event,
                         'properties'  => $properties,
                         'context'     => [
-                            'locale'   => Config::get('app.locale'),
-                            'timezone' => Setting::get('app_timezone'),
+                            'locale'         => Config::get('app.locale'),
+                            'timezone'       => Setting::get('app_timezone'),
+                            'DB_DRIVER'      => getenv('DB_DRIVER'),
+                            'CACHE_DRIVER'   => getenv('CACHE_DRIVER'),
+                            'SESSION_DRIVER' => getenv('SESSION_DRIVER'),
                         ],
                     ]);
                 } else {
@@ -114,10 +120,13 @@ if (!function_exists('segment_page')) {
                 if (Setting::get('app_track')) {
                     return Segment::page([
                         'anonymousId' => Config::get('app.key'),
-                        'page'        => $page,
+                        'name'        => $page,
                         'context'     => [
-                            'locale'   => Config::get('app.locale'),
-                            'timezone' => Setting::get('app_timezone'),
+                            'locale'         => Config::get('app.locale'),
+                            'timezone'       => Setting::get('app_timezone'),
+                            'DB_DRIVER'      => getenv('DB_DRIVER'),
+                            'CACHE_DRIVER'   => getenv('CACHE_DRIVER'),
+                            'SESSION_DRIVER' => getenv('SESSION_DRIVER'),
                         ],
                     ]);
                 } else {
@@ -140,7 +149,7 @@ if (!function_exists('formatted_date')) {
      */
     function formatted_date($date)
     {
-        $dateFormat = Setting::get('date_format') ?: 'jS F Y';
+        $dateFormat = Setting::get('date_format', 'jS F Y');
 
         return (new Date($date))->format($dateFormat);
     }
